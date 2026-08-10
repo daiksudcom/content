@@ -1,0 +1,33 @@
+# ADR 0001: Content のリポジトリ境界
+
+## ステータス
+
+承認済み
+
+## 日付
+
+2026-08-10
+
+## コンテキスト
+
+記事 source、MDX build、生成 asset、resource API、型付き client、Content release は同じ schema と revision に基づく。一方、Home と Blog は独立した表示・デプロイ単位である。
+
+## 決定
+
+`content` リポジトリは `content.daiksud.com`、root の `blog/` source、生成 asset、Content version、`@daiksudcom/content` client package を所有する。Home と Blog は API と package の公開契約だけに依存する。
+
+## 検討した選択肢
+
+- 記事を Blog リポジトリに置く構成
+- API、記事、client package を別々のリポジトリに分ける構成
+- schema と release を Content 境界で一体管理する構成
+
+## 結果
+
+一つの revision から API payload、asset、client schema を検証できる。Home と Blog は Content release と別のタイミングで厳密な client version を採用できる。
+
+## 関連文書
+
+- [記事オーサリング仕様](../features/article-authoring.feature)
+- [Home](https://github.com/daiksudcom/home)
+- [Blog](https://github.com/daiksudcom/blog)
