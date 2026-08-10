@@ -4,7 +4,10 @@ title: "ADR 0006: 生成 asset の配信"
 description: "mediaをcontent hash付きassetへ変換し、Content Workerからimmutable cacheと絶対URLで配信することを定める。"
 resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0006-generated-asset-hosting.md"
 tags: [content, adr, architecture, generated-asset-hosting]
-timestamp: 2026-08-10T06:56:15Z
+status: stable
+generated:
+  by: "codex/gpt-5.6-sol"
+  at: 2026-08-10T07:07:01Z
 ---
 
 # ADR 0006: 生成 asset の配信

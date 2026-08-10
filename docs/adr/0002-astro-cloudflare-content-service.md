@@ -4,7 +4,10 @@ title: "ADR 0002: Astro と Cloudflare による Content service"
 description: "Astro 7とCloudflare WorkerでContent serviceを構成し、Service BindingとHTTPSを共通Fetch契約で扱うことを定める。"
 resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0002-astro-cloudflare-content-service.md"
 tags: [content, adr, architecture, astro, cloudflare, content-service]
-timestamp: 2026-08-10T06:56:15Z
+status: stable
+generated:
+  by: "codex/gpt-5.6-sol"
+  at: 2026-08-10T07:07:01Z
 ---
 
 # ADR 0002: Astro と Cloudflare による Content service
