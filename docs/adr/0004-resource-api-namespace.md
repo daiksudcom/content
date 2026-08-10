@@ -1,3 +1,12 @@
+---
+type: "Architecture Decision Record"
+title: "ADR 0004: resource API namespace"
+description: "Content APIをresource単位のv1階層へ配置し、将来のresourceを同じnamespaceへ追加することを定める。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0004-resource-api-namespace.md"
+tags: [content, adr, architecture, resource-api-namespace]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # ADR 0004: resource API namespace
 
 ## ステータス

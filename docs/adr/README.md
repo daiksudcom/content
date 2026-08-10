@@ -1,3 +1,12 @@
+---
+type: "Architecture Decision Record Index"
+title: "Architecture Decision Records"
+description: "Contentの責務、配信基盤、source契約、API、asset、client、cache、release、toolchainに関する設計判断への索引である。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/README.md"
+tags: [content, adr, architecture, index]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # Architecture Decision Records
 
 | 番号 | 決定 | ステータス | 日付 |

@@ -1,3 +1,12 @@
+---
+type: "Gherkin Specification Index"
+title: "振る舞い仕様"
+description: "記事作成、media、Blog API、client package、cache、releaseのGherkin仕様への索引である。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/features/README.md"
+tags: [content, gherkin, specification, index]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # 振る舞い仕様
 
 - [記事オーサリング](article-authoring.feature)

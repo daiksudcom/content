@@ -1,3 +1,12 @@
+---
+type: "Architecture Decision Record"
+title: "ADR 0005: MDX から trusted HTML への変換"
+description: "Content buildでMDXとAstro componentをtrusted HTML fragmentへ変換してAPI配信することを定める。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0005-mdx-to-trusted-html.md"
+tags: [content, adr, architecture, mdx, trusted-html]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # ADR 0005: MDX から trusted HTML への変換
 
 ## ステータス

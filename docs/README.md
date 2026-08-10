@@ -1,3 +1,12 @@
+---
+type: "Documentation Index"
+title: "文書"
+description: "Content source、API、client package、cache、releaseに関する振る舞い仕様と設計判断への入口を提供する。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/README.md"
+tags: [content, documentation, index]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # 文書
 
 このディレクトリは Content source、API、client package、cache、release の受け入れ基準と技術判断を管理します。

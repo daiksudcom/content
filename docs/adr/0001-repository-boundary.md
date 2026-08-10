@@ -1,3 +1,12 @@
+---
+type: "Architecture Decision Record"
+title: "ADR 0001: Content のリポジトリ境界"
+description: "記事source、生成asset、API、Content version、client packageをContent repositoryで一体管理することを定める。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0001-repository-boundary.md"
+tags: [content, adr, architecture, repository-boundary]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # ADR 0001: Content のリポジトリ境界
 
 ## ステータス

@@ -1,3 +1,12 @@
+---
+type: "Architecture Decision Record"
+title: "ADR 0003: 記事 source 契約"
+description: "記事を日付付きpathとstrict frontmatter schemaで管理し、mediaを記事と同じ階層から参照することを定める。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0003-article-source-contract.md"
+tags: [content, adr, architecture, article-source-contract]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # ADR 0003: 記事 source 契約
 
 ## ステータス

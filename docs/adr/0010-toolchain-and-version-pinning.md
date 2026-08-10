@@ -1,3 +1,12 @@
+---
+type: "Architecture Decision Record"
+title: "ADR 0010: ツールチェーンとバージョン固定"
+description: "ContentのNode.js、pnpm、Astro、Vite+、Wranglerとdependencyを厳密なversionへ固定することを定める。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0010-toolchain-and-version-pinning.md"
+tags: [content, adr, architecture, toolchain, version-pinning]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # ADR 0010: ツールチェーンとバージョン固定
 
 ## ステータス
