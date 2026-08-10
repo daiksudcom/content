@@ -4,7 +4,10 @@ title: "ADR 0009: Content version と release"
 description: "Contentを暦日tagでversioningし、検証、deploy、rollback、cache purgeを直列workflowで管理することを定める。"
 resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0009-content-versioning-and-release.md"
 tags: [content, adr, architecture, content-versioning, release]
-timestamp: 2026-08-10T06:56:15Z
+status: stable
+generated:
+  by: "codex/gpt-5.6-sol"
+  at: 2026-08-10T07:07:01Z
 ---
 
 # ADR 0009: Content version と release

@@ -4,7 +4,10 @@ title: "ADR 0007: Content client package"
 description: "交換可能なtransportとZod検証を備える型付きContent clientをGitHub Packagesで公開することを定める。"
 resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0007-content-client-package.md"
 tags: [content, adr, architecture, content-client-package]
-timestamp: 2026-08-10T06:56:15Z
+status: stable
+generated:
+  by: "codex/gpt-5.6-sol"
+  at: 2026-08-10T07:07:01Z
 ---
 
 # ADR 0007: Content client package

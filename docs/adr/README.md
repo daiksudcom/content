@@ -4,7 +4,10 @@ title: "Architecture Decision Records"
 description: "Contentの責務、配信基盤、source契約、API、asset、client、cache、release、toolchainに関する設計判断への索引である。"
 resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/README.md"
 tags: [content, adr, architecture, index]
-timestamp: 2026-08-10T06:56:15Z
+status: stable
+generated:
+  by: "codex/gpt-5.6-sol"
+  at: 2026-08-10T07:07:01Z
 ---
 
 # Architecture Decision Records
