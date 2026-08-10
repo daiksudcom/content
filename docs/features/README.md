@@ -7,10 +7,12 @@ tags: [content, gherkin, specification, index]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-10T07:12:38Z
 ---
 
 # 振る舞い仕様
+
+各ファイルでは Gherkin キーワードを英語、シナリオ本文を日本語で記述します。
 
 - [記事オーサリング](article-authoring.feature)
 - [記事メディア](article-media.feature)
