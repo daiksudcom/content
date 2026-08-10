@@ -1,3 +1,12 @@
+---
+type: "Architecture Decision Record"
+title: "ADR 0007: Content client package"
+description: "交換可能なtransportとZod検証を備える型付きContent clientをGitHub Packagesで公開することを定める。"
+resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0007-content-client-package.md"
+tags: [content, adr, architecture, content-client-package]
+timestamp: 2026-08-10T06:56:15Z
+---
+
 # ADR 0007: Content client package
 
 ## ステータス
