@@ -7,7 +7,7 @@ tags: [content, adr, architecture, mdx, trusted-html]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0005: MDX から trusted HTML への変換
@@ -26,7 +26,7 @@ Home と Blog の SSR が記事ごとに MDX compiler と UI component graph を
 
 ## 決定
 
-Content build で MDX と明示 import された Astro component を静的 HTML fragment へコンパイルする。API は `format: "trusted-html"`、`html`、`styles`、`rendererVersion` を返す。同じ build で heading TOC、日本語読了時間、公開順に基づく前後記事を生成する。trusted の境界は repository review、strict source validation、固定 UI package、build pipeline とする。
+Content build で MDX と明示 import された Astro component を、Content が所有する trusted HTML representation へ一度だけコンパイルする。trusted の境界は repository review、strict source validation、固定 UI package、build pipeline とする。現在の API payload と派生 metadata は関連する振る舞い仕様を正本とする。
 
 ## 検討した選択肢
 
@@ -36,7 +36,7 @@ Content build で MDX と明示 import された Astro component を静的 HTML 
 
 ## 結果
 
-Home と Blog は同じ renderer output を SSR できる。renderer の変更は rendererVersion と resourceRevision を更新し、Content release と cache purge の対象になる。
+Home と Blog は同じ renderer output を SSR できる。renderer の変更は新しい resource revision として通常の Content release と cache invalidation に参加する。
 
 ## 関連文書
 

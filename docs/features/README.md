@@ -7,18 +7,21 @@ tags: [content, gherkin, specification, index]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:12:38Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # 振る舞い仕様
 
 各ファイルでは Gherkin キーワードを英語、シナリオ本文を日本語で記述します。
 
+振る舞い仕様は現在の観測可能かつ検証可能な契約の正本です。設計判断の理由、選択肢、trade-off は関連する ADR を参照します。
+
 - [記事オーサリング](article-authoring.feature)
 - [記事メディア](article-media.feature)
 - [slug とタグ](slug-and-tag.feature)
 - [Blog 一覧 API](blog-list-api.feature)
 - [Blog 記事 API](blog-article-api.feature)
+- [Content API 共通 protocol](content-api-protocol.feature)
 - [manifest、version、health](manifest-version-health.feature)
 - [Content client package](content-package.feature)
 - [Content cache](content-cache.feature)

@@ -23,7 +23,14 @@ Feature: Content の route、version、稼働状態を取得する
     When client が GET "/v1/version" を要求する
     Then 応答は apiVersion、contentVersion、gitSha、resourceRevisions を持つ
     And cache tag は "content-version-current" である
-    And ETag は配信 version revision から決定される
+    And 応答は ETag を持つ
+
+  Scenario: 配信 version の ETag を再検証する
+    Given 配信 version の応答 ETag が "\"content-version-revision\"" である
+    And 配信 version の応答は変更されていない
+    When client が `If-None-Match: "content-version-revision"` を付けて GET "/v1/version" を要求する
+    Then HTTP ステータス 304 を受け取る
+    And 応答 body は空である
 
   Scenario: health check を取得する
     When monitor が GET "/healthz" を要求する
@@ -31,10 +38,6 @@ Feature: Content の route、version、稼働状態を取得する
     And 応答は `{"status":"ok"}` を含む
     And 応答は現在の contentVersion と gitSha を含む
     And Cache-Control は "no-store" である
-
-  Scenario: API の crawler header を確認する
-    When crawler が GET "/v1/version" を要求する
-    Then 応答は "X-Robots-Tag: noindex" を持つ
 
   Scenario: robots 方針を取得する
     When crawler が GET "/robots.txt" を要求する

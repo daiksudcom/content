@@ -7,7 +7,7 @@ tags: [content, adr, architecture, content-versioning, release]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0009: Content version と release
@@ -26,7 +26,7 @@ generated:
 
 ## 決定
 
-Content release tag を Asia/Tokyo の日付に基づく `vYYYY.MM.DD[+build]` とし、`^v\d{4}\.\d{2}\.\d{2}(?:\+[1-9]\d*)?$` で検証する。同日最初は `v2026.08.10`、次は `v2026.08.10+1`、続いて `+2` と増やす。workflow を concurrency lock で直列化し、既存 tag から candidate を求める。version、SHA、resource revision を埋め込み、検証、Wrangler version upload、preview smoke、production promote、production smoke、annotated tag push、resource cache purge の順で実行する。production smoke または tag push の失敗時は直前の Worker version へ戻す。version tag の更新と削除は GitHub ruleset で保護する。
+Content は Asia/Tokyo の暦日に基づく release identity と、同日 release を順序付ける単調な suffix を採用する。GitHub Actions concurrency で release workflow を直列化し、source SHA、Worker version、resource revision、保護された annotated tag を一つの identity として追跡する。preview と production の段階的な検証、失敗時の rollback、成功後の targeted cache invalidation を一つの rollout として扱い、公開済み tag の変更と削除は GitHub ruleset で防ぐ。現在の version 形式、release 手順、failure handling、tag protection は関連する振る舞い仕様を正本とする。
 
 ## 検討した選択肢
 

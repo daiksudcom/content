@@ -7,7 +7,6 @@ Feature: Content version を安全に production へリリースする
   Background:
     Given release の日付 timezone は "Asia/Tokyo" である
     And version は正規表現 "^v\\d{4}\\.\\d{2}\\.\\d{2}(?:\\+[1-9]\\d*)?$" に一致する
-    And 同じ release branch の workflow は concurrency lock で直列化される
 
   Scenario Outline: 同日の version 候補を決める
     Given 日付が "2026-08-10" である
@@ -21,6 +20,11 @@ Feature: Content version を安全に production へリリースする
       |     1 | v2026.08.10+1 |
       |     2 | v2026.08.10+2 |
 
+  Scenario: 同じ branch の release を直列に実行する
+    Given 同じ release branch で一つの workflow が実行中である
+    When 次の release workflow を開始する
+    Then 後続の workflow は先行 workflow の完了まで待機する
+
   Scenario: candidate を production へ昇格する
     Given candidate version と source git SHA が確定している
     When release workflow を実行する
@@ -28,7 +32,7 @@ Feature: Content version を安全に production へリリースする
       | order | action                                                      |
       |     1 | version、git SHA、resourceRevision を成果物へ埋め込む       |
       |     2 | source、route、schema、package、build を検証する            |
-      |     3 | Wrangler version upload を実行する                          |
+      |     3 | immutable Worker version を upload する                     |
       |     4 | preview deployment で API と asset の smoke test を実行する |
       |     5 | uploaded Worker version を production へ promote する       |
       |     6 | production API と asset の smoke test を実行する            |
@@ -51,6 +55,6 @@ Feature: Content version を安全に production へリリースする
     And 新しい version の cache purge は実行されない
 
   Scenario: 公開済み version tag を保護する
-    Given version tag に GitHub ruleset が適用されている
+    Given 公開済み version tag が保護されている
     When 公開済み tag の更新または削除が要求される
-    Then ruleset は変更を拒否する
+    Then repository は変更を拒否する

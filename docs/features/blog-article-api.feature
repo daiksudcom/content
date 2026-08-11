@@ -37,18 +37,12 @@ Feature: Blog 記事を API で取得する
         }
       }
       """
-    And 応答は "Access-Control-Allow-Origin: *" を持つ
-    And 応答は "X-Robots-Tag: noindex" を持つ
 
   Scenario: 記事 ETag を再検証する
     Given 記事応答の ETag が "\"blog-article-revision\"" である
+    And 同じ slug の記事応答は変更されていない
     When client が同じ slug と `If-None-Match: "blog-article-revision"` で要求する
-    Then resourceRevision と request 条件が同じ場合は HTTP ステータス 304 である
-    And 応答 body は空である
-
-  Scenario: HEAD で記事 metadata を取得する
-    When client が HEAD "/v1/blog/cloudflare-isr" を要求する
-    Then GET と同じ status、ETag、cache、CORS header を受け取る
+    Then HTTP ステータス 304 を受け取る
     And 応答 body は空である
 
   Scenario: 未知の slug を取得する

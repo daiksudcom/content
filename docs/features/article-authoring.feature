@@ -1,7 +1,7 @@
 @content @blog @authoring @mdx
 Feature: 規約に従ってブログ記事を作成する
   記事著者として
-  source path から公開日と slug を再現可能に導出するために
+  `blog/YYYY/MM/DD/article-name/index.mdx` から公開日と slug を再現可能に導出するために
   厳格な MDX 契約で記事を書きたい
 
   Background:
@@ -25,7 +25,7 @@ Feature: 規約に従ってブログ記事を作成する
       When Content build が記事を検証する
       Then 公開日は "2026-08-10" として path から導出される
       And article-name は "cloudflare-isr" である
-      And frontmatter と本文が build input に含まれる
+      And 記事は公開候補に含まれる
 
     Scenario: tags を省略する
       Given 有効な記事の frontmatter に tags がない
