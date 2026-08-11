@@ -7,7 +7,7 @@ tags: [content, adr, architecture, article-source-contract]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0003: 記事 source 契約
@@ -26,7 +26,7 @@ generated:
 
 ## 決定
 
-記事を `blog/YYYY/MM/DD/article-name/index.mdx`、media を同階層の `media/` に置き、MDX から `./media/...` で参照する。公開日は path を Asia/Tokyo の暦日として導出する。article-name は lowercase ASCII kebab とする。frontmatter は `title`、`description`、`tags`（省略時 `[]`）、任意の `updatedAt`、`cover`、`coverAlt` からなる strict schema で検証し、未知 field と未来日の path を error にする。MDX の Astro component はすべて明示 import する。
+日付階層を持つ記事単位の source directory を採用し、公開日と記事 identity を path から導出する。media は記事と同居させ、metadata は公開前に strict schema で検証し、MDX component は明示された依存だけを解決する。現在の path、命名、schema、validation 規則は関連する振る舞い仕様を正本とする。
 
 ## 検討した選択肢
 
@@ -36,9 +36,10 @@ generated:
 
 ## 結果
 
-filesystem から公開順と記事 identity を再現できる。記事と media は移動・レビュー単位が一致し、schema error は該当 path と field を示す。
+filesystem から公開順と記事 identity を再現できる。記事と media は移動・レビュー単位が一致し、source 単位の diagnostic が可能になる。
 
 ## 関連文書
 
 - [記事オーサリング仕様](../features/article-authoring.feature)
 - [記事メディア仕様](../features/article-media.feature)
+- [slug とタグ仕様](../features/slug-and-tag.feature)

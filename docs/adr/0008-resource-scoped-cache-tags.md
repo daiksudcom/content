@@ -7,7 +7,7 @@ tags: [content, adr, architecture, resource-scoped-cache-tags]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0008: resource-scoped cache tag
@@ -26,7 +26,7 @@ Content API は Blog から始まり resource を追加できる。release 後�
 
 ## 決定
 
-現在値を指す tag を `content-{resource}-current` と命名する。Blog は `content-blog-current`、service version は `content-version-current` とする。将来の projects は `content-projects-current` を使う。複数 resource に依存する response は対応する全 tag を持つ。production では `cache.enabled=true` とし、ブラウザーへ `Cache-Control: public, max-age=0`、Cloudflare へ `Cloudflare-CDN-Cache-Control: public, max-age=300, stale-while-revalidate=3600, stale-if-error=86400` を返す。cache key は Worker version 固有とし、release が変更 resource と version の tag を purge する。
+現在値を指す cache alias を resource 単位の `content-{resource}-current` として定義し、複数 resource に依存する response は対応する alias の union を持つ。browser revalidation と edge の stale-while-revalidate、stale-if-error を分離し、cache key は Worker version 間で共有しない。release は変更 resource と service version に対応する alias だけを invalidation する。現在の tag 名、TTL、header、cache state、purge 契約は関連する振る舞い仕様を正本とする。
 
 ## 検討した選択肢
 
@@ -36,7 +36,7 @@ Content API は Blog から始まり resource を追加できる。release 後�
 
 ## 結果
 
-resource が増えても purge 範囲を独立させられる。MISS、HIT、SWR、stale-if-error は `CF-Cache-Status` と release log で観測できる。
+resource が増えても purge 範囲を独立させられる。cache state と release invalidation は運用上観測可能になる。
 
 ## 関連文書
 

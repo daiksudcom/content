@@ -7,7 +7,7 @@ tags: [content, adr, architecture, toolchain, version-pinning]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0010: ツールチェーンとバージョン固定
@@ -41,5 +41,6 @@ Content の release は Home、Blog、UI の build を要求せず、consumer �
 ## 関連文書
 
 - [Content release 仕様](../features/content-release.feature)
+- [Content package 仕様](../features/content-package.feature)
 - [ADR 0002](0002-astro-cloudflare-content-service.md)
 - [ADR 0007](0007-content-client-package.md)

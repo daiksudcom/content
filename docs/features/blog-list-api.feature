@@ -28,7 +28,6 @@ Feature: Blog 記事一覧を API で取得する
         }
       }
       """
-    And 応答は "Access-Control-Allow-Origin: *" を持つ
 
   Scenario: cursor で続きを取得する
     Given 最初の応答が opaque cursor "next-token" を返している
@@ -40,7 +39,9 @@ Feature: Blog 記事一覧を API で取得する
     Given "astro" tag の公開済み記事がある
     When client が "/v1/blog?limit=12&tag=astro" を要求する
     Then page.items の全記事が "astro" tag を持つ
-    And nextCursor は tag filter を保持する opaque value である
+    And nextCursor は opaque value である
+    When client が同じ tag と nextCursor で続きを要求する
+    Then 次の page.items の全記事も "astro" tag を持つ
 
   Scenario Outline: limit を適用する
     When client が "/v1/blog?limit=<limit>" を要求する
@@ -61,19 +62,10 @@ Feature: Blog 記事一覧を API で取得する
 
   Scenario: ETag で一覧を再検証する
     Given 同じ query の応答 ETag が "\"blog-list-revision\"" である
+    And 同じ query の応答は変更されていない
     When client が `If-None-Match: "blog-list-revision"` を付けて要求する
-    Then resourceRevision と query が同じ場合は HTTP ステータス 304 である
+    Then HTTP ステータス 304 を受け取る
     And 応答 body は空である
-
-  Scenario: HEAD で metadata を取得する
-    When client が HEAD で "/v1/blog?limit=12" を要求する
-    Then GET と同じ status、cache、ETag、CORS header を受け取る
-    And 応答 body は空である
-
-  Scenario: CORS preflight を取得する
-    When client が OPTIONS で "/v1/blog" を要求する
-    Then GET、HEAD、OPTIONS を許可する CORS header を受け取る
-    And "Access-Control-Allow-Origin: *" を受け取る
 
   Scenario: 無効な cursor を拒否する
     When client が "/v1/blog?cursor=invalid" を要求する
@@ -86,8 +78,3 @@ Feature: Blog 記事一覧を API で取得する
       | status   |                                                 400 |
       | detail   | cursor is invalid for the requested blog collection |
       | instance | /v1/blog?cursor=invalid                             |
-
-  Scenario: 許可外 method を拒否する
-    When client が POST で "/v1/blog" を要求する
-    Then HTTP ステータス 405 の problem response を受け取る
-    And Allow header は "GET, HEAD, OPTIONS" である

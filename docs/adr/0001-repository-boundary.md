@@ -7,7 +7,7 @@ tags: [content, adr, architecture, repository-boundary]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0001: Content のリポジトリ境界
@@ -36,10 +36,13 @@ generated:
 
 ## 結果
 
-一つの revision から API payload、asset、client schema を検証できる。Home と Blog は Content release と別のタイミングで厳密な client version を採用できる。
+一つの revision から API payload、asset、client schema を検証できる。Home と Blog は公開された client version を互いに独立して採用できる。
 
 ## 関連文書
 
 - [記事オーサリング仕様](../features/article-authoring.feature)
+- [記事メディア仕様](../features/article-media.feature)
+- [Content package 仕様](../features/content-package.feature)
+- [Content release 仕様](../features/content-release.feature)
 - [Home](https://github.com/daiksudcom/home)
 - [Blog](https://github.com/daiksudcom/blog)

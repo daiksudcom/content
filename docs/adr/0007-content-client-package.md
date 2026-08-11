@@ -7,7 +7,7 @@ tags: [content, adr, architecture, content-client-package]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0007: Content client package
@@ -26,7 +26,7 @@ Home と Blog は transport が異なっても同じ API schema、型、problem 
 
 ## 決定
 
-GitHub Packages に `@daiksudcom/content` を SemVer で公開する。入口は `createContentClient({ transport })` とし、`client.blog.list(options)`、`client.blog.get(slug)`、`client.blog.manifest()`、`client.version()` を提供する。`BlogArticleSummary`、`BlogArticle`、`BlogPage`、`ContentVersion` を public type とする。HTTPS transport と Cloudflare Service Binding transport を実装し、全 response を Zod schema で検証する。
+GitHub Packages に independently versioned な typed Content client package を公開する。Fetch-compatible transport を注入できる resource client とし、HTTPS と Cloudflare Service Binding を同じ interface で扱う。全 response は Zod schema で runtime validation する。現在の package 名、operation、public type、typed error は関連する振る舞い仕様を正本とする。
 
 ## 検討した選択肢
 

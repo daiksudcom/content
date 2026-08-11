@@ -10,7 +10,7 @@ Feature: 記事のメディアを生成 asset として配信する
       Given 記事が "blog/2026/08/10/cloudflare-isr/index.mdx" にある
       And 画像が "blog/2026/08/10/cloudflare-isr/media/diagram.png" にある
       When MDX が画像を "./media/diagram.png" として参照する
-      Then Content build はその画像を記事の source asset として解決する
+      Then Content build はその画像を記事の source asset として解決して成功する
 
   Rule: build は配信 asset を content-addressed URL にする
 

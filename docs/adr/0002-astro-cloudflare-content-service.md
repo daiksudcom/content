@@ -7,7 +7,7 @@ tags: [content, adr, architecture, astro, cloudflare, content-service]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0002: Astro と Cloudflare による Content service
@@ -41,4 +41,6 @@ Astro build が生成した asset と API を同じ version で公開できる�
 ## 関連文書
 
 - [Blog 記事 API 仕様](../features/blog-article-api.feature)
+- [記事メディア仕様](../features/article-media.feature)
+- [Content package 仕様](../features/content-package.feature)
 - [ADR 0006](0006-generated-asset-hosting.md)

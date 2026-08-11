@@ -7,7 +7,7 @@ tags: [content, adr, architecture, resource-api-namespace]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:07:01Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # ADR 0004: resource API namespace
@@ -26,7 +26,7 @@ generated:
 
 ## 決定
 
-API を `/v1/{resource}` の sibling namespace とする。最初の resource は `/v1/blog`、`/v1/blog/{slug}`、`/v1/blog/manifest` である。service metadata は `/v1/version`、稼働確認は `/healthz` とする。将来の resource は `/v1/projects` と `client.projects` のように同階層へ追加する。初期の内部 module、schema、query、error は Blog resource に特化させる。public read method は GET、HEAD、OPTIONS、CORS は `Access-Control-Allow-Origin: *`、error media type は `application/problem+json` とする。
+API は `/v1/{resource}` の sibling namespace とし、resource ごとに module、schema、query、error を所有する。service 全体の metadata と稼働確認は resource collection から分離する。将来の resource は既存 resource と同じ階層へ独立して追加し、最初から任意 resource を扱う generic gateway は導入しない。現在の route と HTTP 契約は関連する振る舞い仕様を正本とする。
 
 ## 検討した選択肢
 
@@ -41,4 +41,6 @@ URL と client の拡張位置が明確になる。Blog 実装には不要な抽
 ## 関連文書
 
 - [Blog 一覧 API 仕様](../features/blog-list-api.feature)
+- [Blog 記事 API 仕様](../features/blog-article-api.feature)
+- [Content API 共通 protocol 仕様](../features/content-api-protocol.feature)
 - [manifest、version、health 仕様](../features/manifest-version-health.feature)

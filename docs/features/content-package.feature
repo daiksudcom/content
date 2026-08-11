@@ -25,11 +25,11 @@ Feature: 型付き Content client から resource API を利用する
 
   Scenario: 公開 type を利用する
     When TypeScript consumer が package の型を import する
-    Then `BlogArticleSummary`、`BlogArticle`、`BlogPage`、`ContentVersion` を利用できる
+    Then `BlogArticleSummary`、`BlogArticle`、`BlogPage`、`BlogManifest`、`ContentVersion` を利用できる
 
   Scenario: API 応答を検証する
     Given Content API の応答が期待 schema と一致しない
-    When client が Zod schema で応答を parse する
+    When client が公開 schema に対して応答を検証する
     Then operation は resource、endpoint、validation issue を持つ typed error を返す
 
   Scenario: problem response を受け取る

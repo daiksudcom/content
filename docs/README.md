@@ -7,14 +7,16 @@ tags: [content, documentation, index]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-10T07:12:38Z
+  at: 2026-08-11T21:36:04Z
 ---
 
 # 文書
 
 このディレクトリは Content source、API、client package、cache、release の受け入れ基準と技術判断を管理します。
 
-- [振る舞い仕様](features/README.md): 著者、API consumer、運用者から観測できる契約を、キーワードを英語、シナリオ本文を日本語とする Gherkin で定義します。
-- [Architecture Decision Records](adr/README.md): 実装と運用を拘束する設計判断を記録します。
+## 文書の責務
 
-API は `blog` を最初の resource とし、同じ `/v1/{resource}` 階層へ resource を追加できる契約を持ちます。
+- [振る舞い仕様](features/README.md)は、現在有効な観測可能かつ検証可能な契約の正本です。path、schema、route、header、status、数値、error、release 手順を Gherkin で定義します。
+- [Architecture Decision Records](adr/README.md)は、設計判断の context、理由、選択肢、trade-off、結果を記録します。具体的な契約を繰り返さず、対応する振る舞い仕様を参照します。
+
+観測可能な契約について両者の記述が異なる場合は、振る舞い仕様を現在の仕様として扱います。
