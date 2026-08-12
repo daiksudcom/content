@@ -4,7 +4,41 @@
 
 ## 現在の状態
 
-実装開始前の基準として、観測可能な振る舞いを Gherkin、技術的な決定を Architecture Decision Records（ADR）で確定しています。
+プロダクト実装開始前の基準として、観測可能な振る舞いを Gherkin、技術的な決定を Architecture Decision Records（ADR）で確定しています。Astro 開発用の共通ツールチェーンと CI は利用できます。
+
+## 開発環境
+
+- Node.js 24.16.0 以上
+- pnpm 11.0.0 以上（このリポジトリでは pnpm 11.21.0 を指定）
+
+```sh
+corepack enable
+pnpm install --frozen-lockfile
+```
+
+直接依存は `package.json` で厳密に固定し、推移依存を含む解決結果は `pnpm-lock.yaml` で管理します。
+
+## コマンド
+
+| コマンド | 用途 |
+| --- | --- |
+| `pnpm dev` | Astro の開発サーバーを起動する |
+| `pnpm build` | production build を生成する |
+| `pnpm preview` | production build をローカルで確認する |
+| `pnpm check` | Astro と TypeScript の診断を実行する |
+| `pnpm lint` | 全 linter と未使用コード検査を実行する |
+| `pnpm format` | 対象ファイルを整形する |
+| `pnpm format:check` | 整形差分がないことを検証する |
+| `pnpm validate` | format、lint、check、build をまとめて検証する |
+
+## 品質ツールの責務
+
+- Biome: JavaScript、TypeScript、JSON、CSS の format と lint
+- Prettier: Astro、YAML の format
+- rumdl: Markdown、MDX の format と lint
+- ESLint: 型情報を使う TypeScript 検査と Astro 固有の lint
+- Stylelint: CSS と Astro の style 検査
+- Knip: 未使用 dependency、export、file の検査
 
 ## 仕様書
 

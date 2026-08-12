@@ -7,7 +7,7 @@ tags: [content, adr, architecture, index]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-11T21:36:04Z
+  at: 2026-08-12T13:46:20Z
 ---
 
 # Architecture Decision Records
@@ -27,4 +27,4 @@ ADR は設計判断の context、理由、選択肢、trade-off、結果を記�
 | 0009 | [Content version と release](0009-content-versioning-and-release.md) | 承認済み | 2026-08-10 |
 | 0010 | [ツールチェーンとバージョン固定](0010-toolchain-and-version-pinning.md) | 承認済み | 2026-08-10 |
 
-変更が必要になった決定は、新しい ADR で置き換え関係を明示します。具体的な契約の変更は、対応する振る舞い仕様へ反映します。
+実装開始前の決定は、不要な履歴を増やさず既存 ADR を直接改訂できます。実装開始後に変更が必要になった決定は、新しい ADR で置き換え関係を明示します。具体的な契約の変更は、対応する振る舞い仕様へ反映します。
