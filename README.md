@@ -27,6 +27,8 @@ pnpm install --frozen-lockfile
 | `pnpm preview` | production build をローカルで確認する |
 | `pnpm check` | Astro と TypeScript の診断を実行する |
 | `pnpm lint` | 全 linter と未使用コード検査を実行する |
+| `pnpm lint:commit` | Conventional Commits 形式のメッセージを検証する |
+| `pnpm lint:staged` | staged ファイルを整形して lint する |
 | `pnpm format` | 対象ファイルを整形する |
 | `pnpm format:check` | 整形差分がないことを検証する |
 | `pnpm validate` | format、lint、check、build をまとめて検証する |
@@ -39,6 +41,14 @@ pnpm install --frozen-lockfile
 - ESLint: 型情報を使う TypeScript 検査と Astro 固有の lint
 - Stylelint: CSS と Astro の style 検査
 - Knip: 未使用 dependency、export、file の検査
+- Commitlint: commit message と pull request title の Conventional Commits 検査
+- Husky と lint-staged: commit 前の staged ファイルに限定した format と lint
+
+## コミット時の検証
+
+`pnpm install` の `prepare` script が Git hook を設定します。pre-commit hook は staged ファイルを種類ごとの formatter と linter へ渡し、整形結果を自動で再 stage します。repository 全体の検証は引き続き `pnpm validate` と CI が担当します。
+
+commit message と pull request title は、scope を任意とする `type(scope): summary` 形式にしてください。たとえば `feat(api): add article endpoint` や `docs: explain local validation` を使用できます。commit-msg hook が各 commit を検証し、CI は pull request title、pull request 内の全 commit、`main` へ push された commit を検証します。fast-forward push では追加された範囲を検証し、直前の revision がない場合や non-fast-forward push では新しい HEAD から到達可能な全履歴を再検証します。履歴の取得や検証に失敗した場合は CI を失敗させます。GitHub 形式の two-parent pull request merge commit 本体だけは検証対象から除きます。
 
 ## 仕様書
 
