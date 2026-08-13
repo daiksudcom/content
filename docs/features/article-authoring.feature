@@ -53,6 +53,12 @@ Feature: 規約に従ってブログ記事を作成する
         | title がない                        | title       |
         | description がない                  | description |
         | 定義されていない frontmatter がある | frontmatter |
-        | path の日付が未来である             | publishDate |
+        | path の日付が publishDate と異なる  | publishDate |
         | cover があり coverAlt がない        | coverAlt    |
         | updatedAt が公開日より前である      | updatedAt   |
+
+    Scenario: 未来日付の記事をstagingする
+      Given pathの日付とpublishDateが一致する未来の記事がある
+      When Content buildが記事を検証する
+      Then validationは成功する
+      And 公開日を迎えるまでpublic routeの一覧と記事から除外される

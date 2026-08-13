@@ -13,9 +13,11 @@ Feature: Blog 記事を API で取得する
       """
       {
         "apiVersion": "v1",
+        "openapiVersion": "1.2.3",
         "resource": "blog",
-        "contentVersion": "v2026.08.10+1",
+        "contentVersion": "v1.2.3+20260813030405",
         "gitSha": "<40-character-sha>",
+        "workerVersionId": "<worker-version-id>",
         "resourceRevision": "<blog-revision>",
         "article": {
           "slug": "cloudflare-isr",

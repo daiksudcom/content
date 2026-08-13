@@ -1,16 +1,16 @@
 ---
 type: "Architecture Decision Record"
-title: "ADR 0009: Content version と release"
-description: "Contentを暦日tagでversioningし、検証、deploy、rollback、cache purgeを直列workflowで管理することを定める。"
+title: "ADR 0009: Contentの二層versioningとDeploy"
+description: "delivery service layerだけをSemVerでversioningし、記事layerは常にmainを配信して、mergeごとのDeployでtagを確定する。"
 resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0009-content-versioning-and-release.md"
-tags: [content, adr, architecture, content-versioning, release]
+tags: [content, adr, architecture, versioning, deployment, release]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-13T00:35:00Z
+  at: 2026-08-13T04:12:33Z
 ---
 
-# ADR 0009: Content version と release
+# ADR 0009: Contentの二層versioningとDeploy
 
 ## ステータス
 
@@ -22,23 +22,45 @@ generated:
 
 ## コンテキスト
 
-配信内容は source commit、Worker version、API metadata、resource revision、git tag、cache purge を一つの release identity で追跡できる必要がある。同日に複数回の release も発生する。
+Contentは稼働code、OpenAPI契約、記事と生成assetを同じWorkerから配信する。しかしこの二つは性質が異なる。API handlerとOpenAPI契約はconsumerとの公開契約であり互換性を表現する必要がある一方、記事は公開契約ではなく、著者が書いた時点の`main`が唯一の正しい状態である。
+
+当初は記事revisionを外部のactive manifestで隔離し、記事だけの更新にも独自のrelease制御を与えていた。これはContentだけが他のrepositoryと異なるrelease手順を持つ原因になり、記事公開を二段階操作にして、実体のないpackage script契約を残した。CalVerではAPI compatibilityを表現できず、client packageとの独立versionも廃止された。
 
 ## 決定
 
-Content は Asia/Tokyo の暦日に基づく release identity と、同日 release を順序付ける単調な suffix を採用する。GitHub Actions concurrency で release workflow を直列化し、source SHA、Worker version、resource revision、保護された annotated tag を一つの identity として追跡する。preview と production の段階的な検証、失敗時の rollback、成功後の targeted cache invalidation を一つの rollout として扱い、公開済み tag の変更と削除は GitHub ruleset で防ぐ。現在の version 形式、release 手順、failure handling、tag protection は関連する振る舞い仕様を正本とする。
+Contentを二つのlayerに分け、versioningの扱いを分離する。
+
+**delivery service layer**（API handler、OpenAPI契約、Worker実装）はSemVerを維持する。`package.json#version`をSemVer coreの正本とし、OpenAPI `info.version`を同じ`X.Y.Z`へ一致させる。初版は`0.1.0`、`v`はGit tagだけのprefix、`0.x`中のbreaking changeはminorとし、安定宣言で`1.0.0`へ進む。feature flagはこのrepositoryで管理せず、flags repositoryを正本として他のconsumerと同じ方法で参照する。
+
+**content layer**（`blog/**`の記事MDXと記事media）は常に`main`を配信する。release制御を一切持たず、manifestによる公開gatingも行わない。記事はDeployされた時点で公開される。
+
+PRがmergeされるたびに必ずDeployする。version bumpはPRタイトルのconventional commit型から強制する。squash mergeによりタイトルがcommit件名として履歴に残るためである。`feat:`と`perf:`はminor、`fix:`と`revert:`はpatch、breaking changeはmajor（`0.x`ではminor）、`docs:` `chore:` `ci:` `test:` `build:` `refactor:` `style:`はversionを変更してはならない。
+
+記事だけのPRは`docs(content): ...`とする。SemVer coreを変えず、それでもDeployされ、他のrepositoryにおける`docs:`と完全に同じ`vX.Y.Z+YYYYMMDDHHmmss` tagを受け取る。**これはContent固有の規則ではない。**
+
+`+YYYYMMDDHHmmss`はmerge commitのcommitter時刻をUTCへ変換したものとする。実行時刻ではなくcommitの属性であるため、再実行しても同じtagへ解決する。build metadata tagはGitHub Releaseを作らない。
+
+tag打ちとDeployは単一のworkflowに置く。`GITHUB_TOKEN`によるpushは新しいworkflow runを起動せず、分離するとPATが必要になるためである。Deployのリトライは外部要因（5xx、429、タイムアウト、接続リセット、DNS解決失敗）に限り最大3回とし、内部要因（build失敗、test失敗、401/403、429以外の4xx）は即座に失敗させる。リトライはtagを打ち直さない。Deployの失敗はtagを削除も移動もしない。
+
+不変条件は「最新tag == 本番バージョン」であり、`drift-check.mjs`が検証する。最新tagはSemVer precedenceとcommit topologyで判定し、**辞書順では判定しない。**
 
 ## 検討した選択肢
 
-- SemVer を記事 release に使う方式
-- commit SHA だけを公開 identity にする方式
-- 暦日 version と同日 build suffix を使う方式
+- APIと記事の両方にCalVerを使う方式
+- API SemVerと記事CalVerを別々のcore versionとして持つ方式
+- 記事revisionを外部のmanifest flagで隔離し、manual Release workflowで公開する方式
+- 記事だけのDeployにContent固有のtag規則（同一UTC秒では最新のみtag）を与える方式
+- delivery service layerだけをSemVerでversioningし、記事は常にmainを配信する方式
 
 ## 結果
 
-人が読める release 日と同日の順序を保ちながら、payload から正確な SHA と resource revision を追跡できる。`@daiksudme/content` package の SemVer は client 契約の release identity として独立して維持される。
+API consumerはSemVerとURL majorからcompatibilityを判断でき、記事著者はPRをmergeするだけで記事を公開できる。Contentのrelease手順は他のrepositoryと同一になり、記事専用のsmokeとcache purge契約は不要になった。機能の公開制御はflags repositoryへ移り、Contentはflagのconsumerに徹する。
+
+build metadata同士にはSemVer上の順序がないため、toolingはGit tagの辞書順比較をdeployment順序の正本にしてはならない。
 
 ## 関連文書
 
-- [Content release 仕様](../features/content-release.feature)
-- [manifest、version、health 仕様](../features/manifest-version-health.feature)
+- [Content deliveryとDeploy仕様](../features/content-release.feature)
+- [OpenAPI契約仕様](../features/content-openapi.feature)
+- [manifest、version、health仕様](../features/manifest-version-health.feature)
+- [GitHub、Deploy、Release の運用](../../.github/README.md)

@@ -1,60 +1,138 @@
-@content @release @version @cloudflare
-Feature: Content version を安全に production へリリースする
-  Content 保守者として
-  git tag、Worker version、resource revision、cache を一致させるために
-  日付 version の候補を検証して段階的に昇格したい
+@content @deployment @release @version @cloudflare
+Feature: mergeごとにContentをDeployし、tagで配信revisionを記録する
+  Content保守者として
+  delivery serviceのcontract変更と記事更新を同じ手順で本番へ届けるために
+  tag打ちとDeployを単一のworkflowで決定的に実行したい
 
   Background:
-    Given release の日付 timezone は "Asia/Tokyo" である
-    And version は正規表現 "^v\\d{4}\\.\\d{2}\\.\\d{2}(?:\\+[1-9]\\d*)?$" に一致する
+    Given delivery service layerのSemVer coreはpackage.jsonを正本とする
+    And OpenAPI info.versionはpackage.jsonのversionと一致する
+    And 記事は常にmainを配信し release制御を持たない
+    And 初回core versionは"0.1.0"である
+    And Git tagは更新と削除を禁止されている
 
-  Scenario Outline: 同日の version 候補を決める
-    Given 日付が "2026-08-10" である
-    And 同日の既存 tag 数は <count> である
-    When release candidate を既存 tag から計算する
-    Then candidate は "<version>" である
+  Rule: PRのmergeは必ずDeployされる
 
-    Examples:
-      | count | version       |
-      |     0 | v2026.08.10   |
-      |     1 | v2026.08.10+1 |
-      |     2 | v2026.08.10+2 |
+    Scenario: exact main revisionをproductionへDeployする
+      Given mainに新しいcommitがある
+      When Deploy workflowを実行する
+      Then 次の順序ですべて成功する
+        | order | action                                            |
+        |     1 | revisionがmainに含まれることを検証する            |
+        |     2 | source、OpenAPI、policy、buildを検証する          |
+        |     3 | このrevisionのtagを解決して作成する               |
+        |     4 | immutable Worker versionをuploadする              |
+        |     5 | uploaded versionをpreview smokeする               |
+        |     6 | 同じversionをproductionへ昇格する                 |
+        |     7 | production APIとassetをsmokeする                  |
+        |     8 | source SHAとtagをDeploymentへ記録する             |
+        |     9 | 最新tagが本番versionと一致することを検証する      |
 
-  Scenario: 同じ branch の release を直列に実行する
-    Given 同じ release branch で一つの workflow が実行中である
-    When 次の release workflow を開始する
-    Then 後続の workflow は先行 workflow の完了まで待機する
+    Scenario: mainが短時間に複数回更新される
+      Given 一つのproduction Deployが実行中である
+      And 一つのmain revisionがpendingである
+      When さらに新しいmain revisionが到着する
+      Then 実行中のDeployはcancelされない
+      And 古いpending revisionはskipされる
+      And 最新pending revisionだけが残る
 
-  Scenario: candidate を production へ昇格する
-    Given candidate version と source git SHA が確定している
-    When release workflow を実行する
-    Then 次の順序ですべて成功する
-      | order | action                                                      |
-      |     1 | version、git SHA、resourceRevision を成果物へ埋め込む       |
-      |     2 | source、route、schema、package、build を検証する            |
-      |     3 | immutable Worker version を upload する                     |
-      |     4 | preview deployment で API と asset の smoke test を実行する |
-      |     5 | uploaded Worker version を production へ promote する       |
-      |     6 | production API と asset の smoke test を実行する            |
-      |     7 | 同じ SHA へ annotated git tag を push する                  |
-      |     8 | 変更 resource と version の cache tag を purge する         |
+  Rule: PRタイトルの型が必要なversion bumpを決める
 
-  Scenario: production smoke test が失敗する
-    Given 一つ前の production Worker version が記録されている
-    And 新しい version の production smoke test が失敗した
-    When workflow が失敗を処理する
-    Then production traffic を一つ前の Worker version へ戻す
-    And annotated git tag は作成されない
-    And cache purge は実行されない
+    Scenario Outline: conventional commit型からtagを決める
+      Given 直前のcore versionは"<previous>"である
+      And PRタイトルの型は"<title>"である
+      When pull request policyを検証する
+      Then 必要なcore versionは"<next>"である
+      And 打たれるtagは"<tag>"である
+      And GitHub Releaseの作成は"<release>"である
 
-  Scenario: annotated tag の push が失敗する
-    Given 新しい Worker version の production smoke test は成功した
-    And annotated git tag の push が失敗した
-    When workflow が失敗を処理する
-    Then production traffic を一つ前の Worker version へ戻す
-    And 新しい version の cache purge は実行されない
+      Examples:
+        | previous | title      | next  | tag                     | release |
+        | 0.1.0    | feat:      | 0.2.0 | v0.2.0                  | する    |
+        | 0.1.0    | perf:      | 0.2.0 | v0.2.0                  | する    |
+        | 0.1.0    | fix:       | 0.1.1 | v0.1.1                  | する    |
+        | 0.1.0    | revert:    | 0.1.1 | v0.1.1                  | する    |
+        | 0.1.0    | feat!:     | 0.2.0 | v0.2.0                  | する    |
+        | 1.4.2    | feat!:     | 2.0.0 | v2.0.0                  | する    |
+        | 1.2.3    | docs:      | 1.2.3 | v1.2.3+YYYYMMDDHHmmss   | しない  |
+        | 1.2.3    | chore:     | 1.2.3 | v1.2.3+YYYYMMDDHHmmss   | しない  |
 
-  Scenario: 公開済み version tag を保護する
-    Given 公開済み version tag が保護されている
-    When 公開済み tag の更新または削除が要求される
-    Then repository は変更を拒否する
+    Scenario: version bumpのないfeature PRを拒否する
+      Given 直前のcore versionは"0.1.0"である
+      And PRタイトルは"feat: add a blog endpoint"である
+      And package.jsonのversionは"0.1.0"のままである
+      When pull request policyを検証する
+      Then 検証は失敗する
+      And errorは必要なversion"0.2.0"を示す
+
+    Scenario: package.jsonとOpenAPIのversionが食い違う
+      Given package.jsonのversionは"0.2.0"である
+      And OpenAPI info.versionは"0.1.0"である
+      When repository policyを検証する
+      Then 検証は失敗する
+      And revisionはmergeもDeployもされない
+
+  Rule: 記事だけの更新は他repositoryのdocs変更と同じ扱いになる
+
+    Scenario: 記事と記事mediaだけを更新する
+      Given core versionは"1.2.3"である
+      And PRタイトルは"docs(content): publish the ISR article"である
+      And merge commitのcommitter時刻はUTCの"2026-08-13T03:04:05Z"である
+      When Deploy workflowを実行する
+      Then package.jsonとOpenAPI info.versionは"1.2.3"のままである
+      And 同じSHAへannotated tag "v1.2.3+20260813030405"を作る
+      And GitHub Releaseは作成しない
+      And 記事はDeploy完了時点でpublic routeから取得できる
+
+    Scenario: APIと記事を同時に変更する
+      Given 一つのpull requestがOpenAPI contractと記事を変更する
+      And PRタイトルの型は"feat:"である
+      When Deploy workflowを実行する
+      Then core tag "vX.Y.Z"だけを作る
+      And build metadata tagは作らない
+
+  Rule: 再実行は同じtagへ収束する
+
+    Scenario: 中断したDeployを再実行する
+      Given あるrevisionのtagは作成済みでDeployは未完了である
+      When 同じrevisionへworkflow_dispatchで再実行する
+      Then build識別子はcommitter時刻から同じ値に解決される
+      And 既存tagと同じ名前になるためtagを作り直さない
+      And Deployだけを続行する
+
+    Scenario: 既存tagが別のrevisionを指している
+      Given 解決したtagが別のcommitを指している
+      When Deploy workflowがtagを作ろうとする
+      Then workflowは失敗する
+      And tagは移動も削除もされない
+
+    Scenario Outline: 失敗の原因で再試行を分岐する
+      Given Deploy中に"<cause>"が発生する
+      When workflowが失敗を処理する
+      Then 再試行は"<retry>"である
+
+      Examples:
+        | cause                          | retry        |
+        | Cloudflare APIの503            | 最大3回      |
+        | 429 Too Many Requests          | 最大3回      |
+        | 接続タイムアウト               | 最大3回      |
+        | DNS解決失敗                    | 最大3回      |
+        | build失敗                      | しない       |
+        | test失敗                       | しない       |
+        | 401または403                   | しない       |
+        | 429以外の4xx                   | しない       |
+
+    Scenario: production smokeが失敗する
+      Given 直前のWorker versionが100%で稼働していた
+      And 新しいWorker versionのproduction smokeが失敗する
+      When workflowが失敗を処理する
+      Then production trafficを直前Worker versionへ戻す
+      And 作成済みtagは削除も移動もされない
+      And 次のdrift checkが最新tagと本番versionの乖離を報告する
+
+  Scenario: 最新tagと本番versionの一致を検証する
+    Given "v1.2.3"と"v1.2.3+20260813030405"はSemVer上で同じprecedenceである
+    When 最新tagを判定する
+    Then 辞書順比較を使用しない
+    And SemVer precedenceとcommit topologyを使用する
+    And 判定した最新tagをGitHub Deploymentのreceiptと比較する

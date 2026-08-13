@@ -36,7 +36,7 @@ Content build で MDX と明示 import された Astro component を、Content �
 
 ## 結果
 
-Home と Blog は同じ renderer output を SSR できる。renderer の変更は新しい resource revision として通常の Content release と cache invalidation に参加する。
+HomeとBlogは同じrenderer outputをSSRできる。rendererの変更は新しいresource revisionとしてDeployで反映する。公開APIの意味を変える場合はdelivery service layerのSemVer coreも更新する。
 
 ## 関連文書
 

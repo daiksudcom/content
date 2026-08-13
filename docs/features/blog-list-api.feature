@@ -18,9 +18,11 @@ Feature: Blog 記事一覧を API で取得する
       """
       {
         "apiVersion": "v1",
+        "openapiVersion": "1.2.3",
         "resource": "blog",
-        "contentVersion": "v2026.08.10",
+        "contentVersion": "v1.2.3+20260813030405",
         "gitSha": "<40-character-sha>",
+        "workerVersionId": "<worker-version-id>",
         "resourceRevision": "<blog-revision>",
         "page": {
           "items": ["<12 BlogArticleSummary values>"],

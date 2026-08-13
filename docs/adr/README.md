@@ -1,7 +1,7 @@
 ---
 type: "Architecture Decision Record Index"
 title: "Architecture Decision Records"
-description: "Contentの責務、配信基盤、source契約、API、asset、client、cache、release、toolchain、commit品質に関する設計判断への索引である。"
+description: "Contentの責務、配信基盤、source契約、OpenAPI、asset、cache、Deploy、Release、toolchain、commit品質に関する設計判断への索引である。"
 resource: "https://github.com/daiksudme/content/blob/main/docs/adr/README.md"
 tags: [content, adr, architecture, index]
 status: stable
@@ -22,9 +22,9 @@ ADR は設計判断の context、理由、選択肢、trade-off、結果を記�
 | 0004 | [resource API namespace](0004-resource-api-namespace.md) | 承認済み | 2026-08-10 |
 | 0005 | [MDX から trusted HTML への変換](0005-mdx-to-trusted-html.md) | 承認済み | 2026-08-10 |
 | 0006 | [生成 asset の配信](0006-generated-asset-hosting.md) | 承認済み | 2026-08-10 |
-| 0007 | [Content client package](0007-content-client-package.md) | 承認済み | 2026-08-10 |
+| 0007 | [OpenAPIを正本とするContent API契約](0007-content-client-package.md) | 承認済み | 2026-08-10 |
 | 0008 | [resource-scoped cache tag](0008-resource-scoped-cache-tags.md) | 承認済み | 2026-08-10 |
-| 0009 | [Content version と release](0009-content-versioning-and-release.md) | 承認済み | 2026-08-10 |
+| 0009 | [Contentの二層versioningとDeploy](0009-content-versioning-and-release.md) | 承認済み | 2026-08-10 |
 | 0010 | [ツールチェーンとバージョン固定](0010-toolchain-and-version-pinning.md) | 承認済み | 2026-08-10 |
 | 0011 | [コミット品質ゲート](0011-commit-quality-gates.md) | 承認済み | 2026-08-13 |
 
