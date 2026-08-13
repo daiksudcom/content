@@ -5,7 +5,7 @@ Feature: Blog 記事一覧を API で取得する
   `/v1/blog` の typed resource response を利用したい
 
   Background:
-    Given public Content API の origin は "https://content.daiksud.com" である
+    Given public Content API の origin は "https://content.daiksud.me" である
     And 記事一覧は公開日時の降順、同日時では slug の昇順で安定している
 
   Scenario: 最初の12件を取得する
@@ -73,7 +73,7 @@ Feature: Blog 記事一覧を API で取得する
     And Content-Type は "application/problem+json" である
     And 応答は次の problem fields を持つ
       | field    | value                                               |
-      | type     | https://content.daiksud.com/problems/invalid-cursor |
+      | type     | https://content.daiksud.me/problems/invalid-cursor  |
       | title    | Invalid cursor                                      |
       | status   |                                                 400 |
       | detail   | cursor is invalid for the requested blog collection |

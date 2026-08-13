@@ -2,13 +2,13 @@
 Feature: 型付き Content client から resource API を利用する
   Home と Blog の開発者として
   通信経路にかかわらず同じ検証済み schema を扱うために
-  `@daiksudcom/content` client を利用したい
+  `@daiksudme/content` client を利用したい
 
   Background:
-    Given consumer は GitHub Packages の厳密な SemVer の "@daiksudcom/content" を導入している
+    Given consumer は GitHub Packages の厳密な SemVer の "@daiksudme/content" を導入している
 
   Scenario: HTTPS transport で client を作る
-    Given HTTPS transport の base URL が "https://content.daiksud.com" である
+    Given HTTPS transport の base URL が "https://content.daiksud.me" である
     When `createContentClient({ transport })` を呼び出す
     Then 次の operation を利用できる
       | operation                 | result type    |
@@ -38,7 +38,7 @@ Feature: 型付き Content client から resource API を利用する
     Then type、title、status、detail、instance を保持する Content problem を返す
 
   Scenario: Home と Blog が異なる package version を利用する
-    Given Home は "@daiksudcom/content@1.2.0" を指定している
-    And Blog は "@daiksudcom/content@1.3.1" を指定している
+    Given Home は "@daiksudme/content@1.2.0" を指定している
+    And Blog は "@daiksudme/content@1.3.1" を指定している
     When Blog だけが依存を更新する
     Then Home の解決 version は "1.2.0" のままである

@@ -2,12 +2,12 @@
 type: "Architecture Decision Record"
 title: "ADR 0002: Astro と Cloudflare による Content service"
 description: "Astro 7とCloudflare WorkerでContent serviceを構成し、Service BindingとHTTPSを共通Fetch契約で扱うことを定める。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0002-astro-cloudflare-content-service.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0002-astro-cloudflare-content-service.md"
 tags: [content, adr, architecture, astro, cloudflare, content-service]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-11T21:36:04Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # ADR 0002: Astro と Cloudflare による Content service
@@ -26,7 +26,7 @@ Content は build-time MDX pipeline、HTTP resource API、Cloudflare Service Bin
 
 ## 決定
 
-Astro 7、`@astrojs/cloudflare`、`output: server` を採用し、`content.daiksud.com` の Cloudflare Worker としてデプロイする。API handler と transport は Fetch、Request、Response、URL、Streams などの Web 標準 API を契約にする。Home と Blog からの本番要求は Service Binding、preview と外部 client は HTTPS を使う。
+Astro 7、`@astrojs/cloudflare`、`output: server` を採用し、`content.daiksud.me` の Cloudflare Worker としてデプロイする。API handler と transport は Fetch、Request、Response、URL、Streams などの Web 標準 API を契約にする。Home と Blog からの本番要求は Service Binding、preview と外部 client は HTTPS を使う。
 
 ## 検討した選択肢
 

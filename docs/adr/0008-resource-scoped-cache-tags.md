@@ -2,12 +2,12 @@
 type: "Architecture Decision Record"
 title: "ADR 0008: resource-scoped cache tag"
 description: "cache tagをresource単位で命名し、release時に変更resourceとversionのedge cacheを無効化することを定める。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0008-resource-scoped-cache-tags.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0008-resource-scoped-cache-tags.md"
 tags: [content, adr, architecture, resource-scoped-cache-tags]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-11T21:36:04Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # ADR 0008: resource-scoped cache tag

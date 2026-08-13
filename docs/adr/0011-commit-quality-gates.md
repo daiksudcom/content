@@ -2,12 +2,12 @@
 type: "Architecture Decision Record"
 title: "ADR 0011: コミット品質ゲート"
 description: "Contentのstagedファイル、commit message、pull request titleをlocal hookとCIで検証することを定める。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0011-commit-quality-gates.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0011-commit-quality-gates.md"
 tags: [content, adr, architecture, git-hooks, conventional-commits]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-12T22:52:26Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # ADR 0011: コミット品質ゲート

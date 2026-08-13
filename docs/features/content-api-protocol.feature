@@ -5,7 +5,7 @@ Feature: Content API の共通 HTTP 契約を利用する
   versioned API endpoint の共通 protocol を検証したい
 
   Background:
-    Given public Content API の origin は "https://content.daiksud.com" である
+    Given public Content API の origin は "https://content.daiksud.me" である
 
   Scenario Outline: public read endpoint を取得する
     Given "<path>" に公開済みの対象がある

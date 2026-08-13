@@ -35,7 +35,7 @@ Feature: 規約に従ってブログ記事を作成する
     Scenario: 記事で Astro コンポーネントを使う
       Given MDX 冒頭に次の import がある
         """
-        import { Callout } from '@daiksudcom/ui/components/Callout';
+        import { Callout } from '@daiksudme/ui/components/Callout';
         """
       When 本文が Callout を使用する
       Then Content build は明示された public export を解決する

@@ -2,12 +2,12 @@
 type: "Architecture Decision Record Index"
 title: "Architecture Decision Records"
 description: "Contentの責務、配信基盤、source契約、API、asset、client、cache、release、toolchain、commit品質に関する設計判断への索引である。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/README.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/adr/README.md"
 tags: [content, adr, architecture, index]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-12T22:52:26Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # Architecture Decision Records

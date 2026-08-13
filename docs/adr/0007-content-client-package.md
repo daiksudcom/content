@@ -2,12 +2,12 @@
 type: "Architecture Decision Record"
 title: "ADR 0007: Content client package"
 description: "交換可能なtransportとZod検証を備える型付きContent clientをGitHub Packagesで公開することを定める。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0007-content-client-package.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0007-content-client-package.md"
 tags: [content, adr, architecture, content-client-package]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-11T21:36:04Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # ADR 0007: Content client package
@@ -41,5 +41,5 @@ runtime response と TypeScript type のずれを consumer 境界で検出でき
 ## 関連文書
 
 - [Content package 仕様](../features/content-package.feature)
-- [Home の Content access ADR](https://github.com/daiksudcom/home/blob/main/docs/adr/0003-content-api-access.md)
-- [Blog の Content access ADR](https://github.com/daiksudcom/blog/blob/main/docs/adr/0003-content-api-access.md)
+- [Home の Content access ADR](https://github.com/daiksudme/home/blob/main/docs/adr/0003-content-api-access.md)
+- [Blog の Content access ADR](https://github.com/daiksudme/blog/blob/main/docs/adr/0003-content-api-access.md)

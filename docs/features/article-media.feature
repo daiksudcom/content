@@ -22,13 +22,13 @@ Feature: 記事のメディアを生成 asset として配信する
 
     Scenario: public API 応答の asset URL を絶対化する
       Given trusted HTML fragment に "/_astro/abc123.webp" がある
-      When "https://content.daiksud.com/v1/blog/cloudflare-isr" が要求される
-      Then fragment の URL は "https://content.daiksud.com/_astro/abc123.webp" になる
+      When "https://content.daiksud.me/v1/blog/cloudflare-isr" が要求される
+      Then fragment の URL は "https://content.daiksud.me/_astro/abc123.webp" になる
 
     Scenario: Service Binding 応答の asset URL を絶対化する
-      Given Blog Worker が Service Binding request の URL を "https://content.daiksud.com/v1/blog/cloudflare-isr" にする
+      Given Blog Worker が Service Binding request の URL を "https://content.daiksud.me/v1/blog/cloudflare-isr" にする
       When Content Worker が記事を返す
-      Then fragment の asset URL は "https://content.daiksud.com" origin を使う
+      Then fragment の asset URL は "https://content.daiksud.me" origin を使う
 
     Scenario: preview 応答の asset URL を絶対化する
       Given preview request の origin が "https://content-preview.example.workers.dev" である

@@ -2,12 +2,12 @@
 type: "Architecture Decision Record"
 title: "ADR 0009: Content version と release"
 description: "Contentを暦日tagでversioningし、検証、deploy、rollback、cache purgeを直列workflowで管理することを定める。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0009-content-versioning-and-release.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0009-content-versioning-and-release.md"
 tags: [content, adr, architecture, content-versioning, release]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-11T21:36:04Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # ADR 0009: Content version と release
@@ -36,7 +36,7 @@ Content は Asia/Tokyo の暦日に基づく release identity と、同日 relea
 
 ## 結果
 
-人が読める release 日と同日の順序を保ちながら、payload から正確な SHA と resource revision を追跡できる。`@daiksudcom/content` package の SemVer は client 契約の release identity として独立して維持される。
+人が読める release 日と同日の順序を保ちながら、payload から正確な SHA と resource revision を追跡できる。`@daiksudme/content` package の SemVer は client 契約の release identity として独立して維持される。
 
 ## 関連文書
 
