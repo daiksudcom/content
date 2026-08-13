@@ -1,7 +1,7 @@
 ---
 type: "Documentation Index"
 title: "文書"
-description: "Content source、API、client package、cache、releaseに関する振る舞い仕様と設計判断への入口を提供する。"
+description: "Content source、OpenAPI、cache、Deploy、Releaseに関する振る舞い仕様と設計判断への入口を提供する。"
 resource: "https://github.com/daiksudme/content/blob/main/docs/README.md"
 tags: [content, documentation, index]
 status: stable
@@ -12,7 +12,7 @@ generated:
 
 # 文書
 
-このディレクトリは Content source、API、client package、cache、release の受け入れ基準と技術判断を管理します。
+このディレクトリはContent source、API、OpenAPI contract、cache、Deploy、Releaseの受け入れ基準と技術判断を管理します。
 
 ## 文書の責務
 

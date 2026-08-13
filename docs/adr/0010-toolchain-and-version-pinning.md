@@ -22,7 +22,7 @@ generated:
 
 ## コンテキスト
 
-Content service と client package の実装を進める前に、開発者と CI が同じ結果を再現できる基盤を確立する必要がある。format、lint、型検査、build の責務が重複すると、修正の競合や環境ごとの差異が発生する。依存更新も暗黙に取り込まず、変更内容をレビュー可能にする必要がある。
+Content serviceとOpenAPI契約の実装を進める前に、開発者とCIが同じ結果を再現できる基盤を確立する必要がある。format、lint、型検査、buildの責務が重複すると、修正の競合や環境ごとの差異が発生する。依存更新も暗黙に取り込まず、変更内容をreview可能にする必要がある。
 
 ## 決定
 
@@ -46,6 +46,6 @@ CI は pull request と `main` への push で frozen install、format 検査、
 ## 関連文書
 
 - [Content release 仕様](../features/content-release.feature)
-- [Content package 仕様](../features/content-package.feature)
+- [OpenAPI 契約仕様](../features/content-openapi.feature)
 - [ADR 0002](0002-astro-cloudflare-content-service.md)
 - [ADR 0007](0007-content-client-package.md)

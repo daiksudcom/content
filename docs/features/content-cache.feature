@@ -49,9 +49,9 @@ Feature: resource 単位で Content 応答をキャッシュする
     When API を要求する
     Then 利用可能な stale response を返す
 
-  Scenario: Blog release の cache を purge する
-    Given 新しい blog resource revision が production に昇格した
-    When release workflow が "content-blog-current" を purge する
+  Scenario: Blog Deployのcacheをpurgeする
+    Given 新しいblog resource revisionがproductionに昇格した
+    When Deploy workflowが"content-blog-current"をpurgeする
     Then 次の Blog 要求は新しい revision から response を生成する
     And CF-Cache-Status は "MISS" である
     And 続く同じ Blog 要求で CF-Cache-Status は "HIT" になる

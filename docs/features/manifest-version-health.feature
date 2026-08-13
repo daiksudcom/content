@@ -11,8 +11,10 @@ Feature: Content の route、version、稼働状態を取得する
       | field            | value                  |
       | apiVersion       | v1                     |
       | resource         | blog                   |
-      | contentVersion   | vYYYY.MM.DD[+build]    |
-      | gitSha           |    40文字の commit SHA |
+      | openapiVersion   | X.Y.Z                  |
+      | contentVersion   | vX.Y.Z[+YYYYMMDDHHmmss] |
+      | gitSha           | 配信中revisionの40文字commit SHA |
+      | workerVersionId  | 配信中revisionを保持するWorker version ID |
       | resourceRevision | blog resource revision |
       | routes.articles  | slug の集合            |
       | routes.tags      | tag の集合             |
@@ -21,7 +23,7 @@ Feature: Content の route、version、稼働状態を取得する
 
   Scenario: 配信 version を取得する
     When client が GET "/v1/version" を要求する
-    Then 応答は apiVersion、contentVersion、gitSha、resourceRevisions を持つ
+    Then 応答はapiVersion、openapiVersion、contentVersion、gitSha、workerVersionId、resourceRevisionsを持つ
     And cache tag は "content-version-current" である
     And 応答は ETag を持つ
 
@@ -36,7 +38,8 @@ Feature: Content の route、version、稼働状態を取得する
     When monitor が GET "/healthz" を要求する
     Then HTTP ステータス 200 を受け取る
     And 応答は `{"status":"ok"}` を含む
-    And 応答は現在の contentVersion と gitSha を含む
+    And 応答は現在のopenapiVersion、contentVersion、gitSha、workerVersionIdを含む
+    And gitShaは稼働中Workerがbuildされたmain revisionである
     And Cache-Control は "no-store" である
 
   Scenario: robots 方針を取得する

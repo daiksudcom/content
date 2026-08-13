@@ -1,7 +1,7 @@
 ---
 type: "Architecture Decision Record"
 title: "ADR 0008: resource-scoped cache tag"
-description: "cache tagをresource単位で命名し、release時に変更resourceとversionのedge cacheを無効化することを定める。"
+description: "cache tagをresource単位で命名し、Deploy時に変更resourceとversionのedge cacheを無効化することを定める。"
 resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0008-resource-scoped-cache-tags.md"
 tags: [content, adr, architecture, resource-scoped-cache-tags]
 status: stable
@@ -22,11 +22,11 @@ generated:
 
 ## コンテキスト
 
-Content API は Blog から始まり resource を追加できる。release 後は変更された resource に依存する API、Home、Blog の edge cache だけを一貫して無効化する必要がある。
+Content APIはBlogから始まりresourceを追加できる。Deploy後は変更されたresourceに依存するAPI、Home、Blogのedge cacheだけを一貫して無効化する必要がある。
 
 ## 決定
 
-現在値を指す cache alias を resource 単位の `content-{resource}-current` として定義し、複数 resource に依存する response は対応する alias の union を持つ。browser revalidation と edge の stale-while-revalidate、stale-if-error を分離し、cache key は Worker version 間で共有しない。release は変更 resource と service version に対応する alias だけを invalidation する。現在の tag 名、TTL、header、cache state、purge 契約は関連する振る舞い仕様を正本とする。
+現在値を指すcache aliasをresource単位の`content-{resource}-current`として定義し、複数resourceに依存するresponseは対応するaliasのunionを持つ。browser revalidationとedgeのstale-while-revalidate、stale-if-errorを分離し、cache keyはWorker versionまたはresource revisionが異なる場合に共有しない。Deployが本番Worker versionを切り替えた後、変更resourceとservice versionのaliasだけをinvalidationする。
 
 ## 検討した選択肢
 
@@ -36,7 +36,7 @@ Content API は Blog から始まり resource を追加できる。release 後�
 
 ## 結果
 
-resource が増えても purge 範囲を独立させられる。cache state と release invalidation は運用上観測可能になる。
+resourceが増えてもpurge範囲を独立させられる。cache stateとdeployment invalidationは運用上観測可能になる。
 
 ## 関連文書
 
