@@ -34,9 +34,6 @@ spec:
     - name: revert
       description: A reverted public change (PATCH)
       color: 79b8ff
-    - name: release
-      description: Release metadata or rollback operation
-      color: 5319e7
     - name: content
       description: Article or article-media-only update (build metadata)
       color: 1d76db
