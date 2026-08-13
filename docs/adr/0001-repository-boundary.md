@@ -2,12 +2,12 @@
 type: "Architecture Decision Record"
 title: "ADR 0001: Content のリポジトリ境界"
 description: "記事source、生成asset、API、Content version、client packageをContent repositoryで一体管理することを定める。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0001-repository-boundary.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0001-repository-boundary.md"
 tags: [content, adr, architecture, repository-boundary]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-11T21:36:04Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # ADR 0001: Content のリポジトリ境界
@@ -26,7 +26,7 @@ generated:
 
 ## 決定
 
-`content` リポジトリは `content.daiksud.com`、root の `blog/` source、生成 asset、Content version、`@daiksudcom/content` client package を所有する。Home と Blog は API と package の公開契約だけに依存する。
+`content` リポジトリは `content.daiksud.me`、root の `blog/` source、生成 asset、Content version、`@daiksudme/content` client package を所有する。Home と Blog は API と package の公開契約だけに依存する。
 
 ## 検討した選択肢
 
@@ -44,5 +44,5 @@ generated:
 - [記事メディア仕様](../features/article-media.feature)
 - [Content package 仕様](../features/content-package.feature)
 - [Content release 仕様](../features/content-release.feature)
-- [Home](https://github.com/daiksudcom/home)
-- [Blog](https://github.com/daiksudcom/blog)
+- [Home](https://github.com/daiksudme/home)
+- [Blog](https://github.com/daiksudme/blog)

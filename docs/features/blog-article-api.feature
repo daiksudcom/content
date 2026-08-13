@@ -28,7 +28,7 @@ Feature: Blog 記事を API で取得する
           "coverAlt": "<alternative text or null>",
           "format": "trusted-html",
           "html": "<compiled HTML fragment>",
-          "styles": ["https://content.daiksud.com/_astro/<hash>.css"],
+          "styles": ["https://content.daiksud.me/_astro/<hash>.css"],
           "rendererVersion": "<renderer-version>",
           "toc": ["<heading entries>"],
           "readingTimeMinutes": 6,
@@ -49,4 +49,4 @@ Feature: Blog 記事を API で取得する
     When client が GET "/v1/blog/missing-article" を要求する
     Then HTTP ステータス 404 を受け取る
     And Content-Type は "application/problem+json" である
-    And problem type は "https://content.daiksud.com/problems/blog-not-found" である
+    And problem type は "https://content.daiksud.me/problems/blog-not-found" である

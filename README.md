@@ -1,6 +1,6 @@
 # Content
 
-`content.daiksud.com` の resource API、ブログ記事ソースと生成 asset、Content release、および GitHub Packages の `@daiksudcom/content` client 契約を定義するリポジトリです。
+`content.daiksud.me` の resource API、ブログ記事ソースと生成 asset、Content release、および GitHub Packages の `@daiksudme/content` client 契約を定義するリポジトリです。
 
 ## 現在の状態
 
@@ -58,6 +58,6 @@ commit message と pull request title は、scope を任意とする `type(scope
 
 ## 関連リポジトリ
 
-- [Home](https://github.com/daiksudcom/home)
-- [Blog](https://github.com/daiksudcom/blog)
-- [UI](https://github.com/daiksudcom/ui)
+- [Home](https://github.com/daiksudme/home)
+- [Blog](https://github.com/daiksudme/blog)
+- [UI](https://github.com/daiksudme/ui)

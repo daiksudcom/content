@@ -2,12 +2,12 @@
 type: "Architecture Decision Record"
 title: "ADR 0005: MDX から trusted HTML への変換"
 description: "Content buildでMDXとAstro componentをtrusted HTML fragmentへ変換してAPI配信することを定める。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/adr/0005-mdx-to-trusted-html.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/adr/0005-mdx-to-trusted-html.md"
 tags: [content, adr, architecture, mdx, trusted-html]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-11T21:36:04Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # ADR 0005: MDX から trusted HTML への変換
@@ -41,4 +41,4 @@ Home と Blog は同じ renderer output を SSR できる。renderer の変更�
 ## 関連文書
 
 - [Blog 記事 API 仕様](../features/blog-article-api.feature)
-- [UI MDX component 仕様](https://github.com/daiksudcom/ui/blob/main/docs/features/mdx-component.feature)
+- [UI MDX component 仕様](https://github.com/daiksudme/ui/blob/main/docs/features/mdx-component.feature)

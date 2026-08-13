@@ -21,18 +21,18 @@ Feature: 記事 slug とタグ route を一意に決定する
     Scenario: 最初の記事へ基本 slug を割り当てる
       Given "blog/2026/08/10/astro-cache/index.mdx" が最古の同名記事である
       When Content build が公開 route を生成する
-      Then 記事 URL は "https://blog.daiksud.com/astro-cache/" である
+      Then 記事 URL は "https://blog.daiksud.me/astro-cache/" である
 
     Scenario: 後の記事の article-name が衝突する
       Given 2026-08-10 の "astro-cache" が基本 slug を保持している
       And "blog/2026/09/12/astro-cache/index.mdx" がある
       When Content build が公開 route を生成する
-      Then 後の記事 URL は "https://blog.daiksud.com/astro-cache-20260912/" である
+      Then 後の記事 URL は "https://blog.daiksud.me/astro-cache-20260912/" である
 
     Scenario: tag route を生成する
       Given 公開済み記事に tag "cloudflare" がある
       When Content build が公開 route を生成する
-      Then tag URL は "https://blog.daiksud.com/cloudflare/" である
+      Then tag URL は "https://blog.daiksud.me/cloudflare/" である
 
     Scenario Outline: 共有 namespace の衝突を拒否する
       Given "<name>" が "<existing>" として予約されている

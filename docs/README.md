@@ -2,12 +2,12 @@
 type: "Documentation Index"
 title: "文書"
 description: "Content source、API、client package、cache、releaseに関する振る舞い仕様と設計判断への入口を提供する。"
-resource: "https://github.com/daiksudcom/content/blob/main/docs/README.md"
+resource: "https://github.com/daiksudme/content/blob/main/docs/README.md"
 tags: [content, documentation, index]
 status: stable
 generated:
   by: "codex/gpt-5.6-sol"
-  at: 2026-08-11T21:36:04Z
+  at: 2026-08-13T00:35:00Z
 ---
 
 # 文書
