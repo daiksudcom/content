@@ -26,7 +26,7 @@ generated:
 
 ## 決定
 
-API は `/v1/{resource}` の sibling namespace とし、resource ごとに module、schema、query、error を所有する。service 全体の metadata と稼働確認は resource collection から分離する。将来の resource は既存 resource と同じ階層へ独立して追加し、最初から任意 resource を扱う generic gateway は導入しない。現在の route と HTTP 契約は関連する振る舞い仕様を正本とする。
+APIは`/v{major}/{resource}`のsibling namespaceとし、OpenAPI SemVerのmajorとURL majorを一致させる。breaking changeでは新旧majorを並行提供し、consumer移行とdeprecationを経た別Releaseで旧majorを廃止する。resourceごとにmodule、schema、query、errorを所有し、service全体のmetadataと稼働確認はresource collectionから分離する。将来のresourceは既存resourceと同じ階層へ独立して追加し、最初から任意resourceを扱うgeneric gatewayは導入しない。
 
 ## 検討した選択肢
 
@@ -36,7 +36,7 @@ API は `/v1/{resource}` の sibling namespace とし、resource ごとに modul
 
 ## 結果
 
-URL と client の拡張位置が明確になる。Blog 実装には不要な抽象化を持ち込まず、将来 resource は独自 schema と revision を追加できる。
+URLとconsumerの拡張位置が明確になる。breaking contractを既存consumerへ即時上書きせず、major単位で移行できる。
 
 ## 関連文書
 

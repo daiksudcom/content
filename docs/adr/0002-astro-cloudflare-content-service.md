@@ -42,5 +42,5 @@ Astro build が生成した asset と API を同じ version で公開できる�
 
 - [Blog 記事 API 仕様](../features/blog-article-api.feature)
 - [記事メディア仕様](../features/article-media.feature)
-- [Content package 仕様](../features/content-package.feature)
+- [Content OpenAPI 契約仕様](../features/content-openapi.feature)
 - [ADR 0006](0006-generated-asset-hosting.md)

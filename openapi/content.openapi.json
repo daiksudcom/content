@@ -1,0 +1,266 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "daiksud.me Content API",
+    "version": "0.1.0"
+  },
+  "servers": [{ "url": "https://content.daiksud.me" }],
+  "paths": {
+    "/v1/blog": {
+      "get": {
+        "operationId": "listBlogArticles",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 12 }
+          },
+          { "name": "cursor", "in": "query", "schema": { "type": "string" } },
+          { "name": "tag", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of public articles",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/BlogPageEnvelope" } }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/blog/manifest": {
+      "get": {
+        "operationId": "getBlogManifest",
+        "responses": {
+          "200": {
+            "description": "The current Blog resource manifest",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/BlogManifest" } }
+            }
+          }
+        }
+      }
+    },
+    "/v1/blog/{slug}": {
+      "get": {
+        "operationId": "getBlogArticle",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A public article",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BlogArticleEnvelope" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/version": {
+      "get": {
+        "operationId": "getContentVersion",
+        "responses": {
+          "200": {
+            "description": "Content contract, content, and deployment identities",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ContentVersion" } }
+            }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "Worker health and active identities",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Health" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "Problem": {
+        "description": "An RFC 9457 problem response",
+        "content": {
+          "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } }
+        }
+      }
+    },
+    "schemas": {
+      "ApiIdentity": {
+        "type": "object",
+        "required": [
+          "apiVersion",
+          "openapiVersion",
+          "contentVersion",
+          "gitSha",
+          "workerVersionId",
+          "deploymentSha"
+        ],
+        "properties": {
+          "apiVersion": { "type": "string", "pattern": "^v[1-9][0-9]*$" },
+          "openapiVersion": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          },
+          "contentVersion": {
+            "type": "string",
+            "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:\\+[0-9]{14})?$"
+          },
+          "gitSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "workerVersionId": { "type": "string", "minLength": 1 },
+          "deploymentSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" }
+        }
+      },
+      "BlogArticleSummary": {
+        "type": "object",
+        "required": ["slug", "title", "description", "publishedAt", "tags"],
+        "properties": {
+          "slug": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "publishedAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": ["string", "null"], "format": "date-time" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "cover": { "type": ["string", "null"], "format": "uri" },
+          "coverAlt": { "type": ["string", "null"] }
+        }
+      },
+      "BlogArticle": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BlogArticleSummary" },
+          {
+            "type": "object",
+            "required": ["format", "html", "styles", "rendererVersion", "toc"],
+            "properties": {
+              "format": { "const": "trusted-html" },
+              "html": { "type": "string" },
+              "styles": { "type": "array", "items": { "type": "string", "format": "uri" } },
+              "rendererVersion": { "type": "string" },
+              "toc": { "type": "array", "items": { "type": "object" } },
+              "readingTimeMinutes": { "type": "integer", "minimum": 1 },
+              "previous": {
+                "oneOf": [{ "$ref": "#/components/schemas/BlogArticleSummary" }, { "type": "null" }]
+              },
+              "next": {
+                "oneOf": [{ "$ref": "#/components/schemas/BlogArticleSummary" }, { "type": "null" }]
+              }
+            }
+          }
+        ]
+      },
+      "BlogPageEnvelope": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiIdentity" },
+          {
+            "type": "object",
+            "required": ["resource", "resourceRevision", "page"],
+            "properties": {
+              "resource": { "const": "blog" },
+              "resourceRevision": { "type": "string" },
+              "page": {
+                "type": "object",
+                "required": ["items", "nextCursor"],
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/BlogArticleSummary" }
+                  },
+                  "nextCursor": { "type": ["string", "null"] }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BlogArticleEnvelope": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiIdentity" },
+          {
+            "type": "object",
+            "required": ["resource", "resourceRevision", "article"],
+            "properties": {
+              "resource": { "const": "blog" },
+              "resourceRevision": { "type": "string" },
+              "article": { "$ref": "#/components/schemas/BlogArticle" }
+            }
+          }
+        ]
+      },
+      "BlogManifest": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiIdentity" },
+          {
+            "type": "object",
+            "required": ["resource", "resourceRevision", "routes", "rendererVersion"],
+            "properties": {
+              "resource": { "const": "blog" },
+              "resourceRevision": { "type": "string" },
+              "routes": {
+                "type": "object",
+                "required": ["articles", "tags"],
+                "properties": {
+                  "articles": { "type": "array", "items": { "type": "string" } },
+                  "tags": { "type": "array", "items": { "type": "string" } }
+                }
+              },
+              "rendererVersion": { "type": "string" }
+            }
+          }
+        ]
+      },
+      "ContentVersion": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiIdentity" },
+          {
+            "type": "object",
+            "required": ["resourceRevisions"],
+            "properties": {
+              "resourceRevisions": {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              }
+            }
+          }
+        ]
+      },
+      "Health": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiIdentity" },
+          {
+            "type": "object",
+            "required": ["status"],
+            "properties": { "status": { "const": "ok" } }
+          }
+        ]
+      },
+      "Problem": {
+        "type": "object",
+        "required": ["type", "title", "status", "detail", "instance"],
+        "properties": {
+          "type": { "type": "string", "format": "uri" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "minimum": 400, "maximum": 599 },
+          "detail": { "type": "string" },
+          "instance": { "type": "string" }
+        }
+      }
+    }
+  }
+}
