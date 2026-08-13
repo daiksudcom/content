@@ -1,9 +1,18 @@
+# `pull-request-branch-name.prefix` is set to the bare Conventional Commits
+# type each ecosystem's `commit-message.prefix` already uses (without the
+# `(deps)`/`(deps-dev)` scope), so the branch name itself -- not only the
+# changed-files fallback -- satisfies `.github/labeler.yml`'s `^chore/`
+# head-branch rule. Dependabot's default `dependabot/...` branch names never
+# match that pattern, so before this change every Dependabot PR depended
+# entirely on the changed-files rule to receive its `chore` label.
 version: 2
 updates:
   - package-ecosystem: github-actions
     directory: /
     commit-message:
       prefix: 'chore(actions)'
+    pull-request-branch-name:
+      prefix: 'chore'
     schedule:
       interval: weekly
       day: monday
@@ -14,6 +23,8 @@ updates:
     commit-message:
       prefix: 'chore(deps)'
       prefix-development: 'chore(deps-dev)'
+    pull-request-branch-name:
+      prefix: 'chore'
     schedule:
       interval: weekly
       day: monday
