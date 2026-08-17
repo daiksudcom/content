@@ -42,7 +42,7 @@
     "postcss-html": "2.0.0",
     "prettier": "3.9.6",
     "prettier-plugin-astro": "0.14.1",
-    "rumdl": "0.2.53",
+    "rumdl": "0.2.55",
     "stylelint": "17.14.1",
     "stylelint-config-html": "2.0.0",
     "stylelint-config-standard": "40.0.0",
